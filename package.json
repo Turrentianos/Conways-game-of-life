@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "check": "tsc --noEmit",
-    "start": "parcel index.html",
-    "build": "parcel build index.html --no-minify"
+    "start": "parcel serve src/index.html",
+    "build": "cross-env NODE_ENV=production parcel build src/index.html --public-url .",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "glslify-bundle": "^5.1.1",
