@@ -60,7 +60,7 @@ export default class ConwaysMesh extends AbstractConway {
         });
         // const geometry = new PlaneGeometry(1.9, 1.9);
         const geometry = new PlaneBufferGeometry(width, height);
-        const offset = 150;
+        const offset = 40;
         this.world = world;
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.columns; x++) {

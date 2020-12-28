@@ -15,7 +15,7 @@ const camera = new OrthographicCamera(-width / 2, width / 2, height / 2, -height
 
 const scene = new Scene();
 
-let mesh = new ConwaysMesh(new Color('azure'), 3, width, height, scene);
+let mesh = new ConwaysMesh(new Color('azure'), 8, width, height, scene);
 
 if (mesh instanceof ConwaysMeshes) {
   camera.position.set(width/2, height/2, 0);
