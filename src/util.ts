@@ -1,12 +1,11 @@
 import cwise from "cwise";
 
 
-
-let fill = cwise({
+let copy = cwise({
     args: ["array", "array"],
-    body: function(a, b) {
+    body: function(a: any, b: any) {
         a = b;
     }
 });
 
-export default fill;
+export default copy;

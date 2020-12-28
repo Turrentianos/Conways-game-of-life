@@ -1,16 +1,29 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["esnext", "dom"],
     "module": "es2020",
-    "outDir": "dist",
-    "downlevelIteration": true,
     "moduleResolution": "node",
+    "newLine": "LF",
+    "outDir": "./lib/",
+    "target": "es6",
+    "sourceMap": true,
+    "declaration": true,
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "strict": true,
-    "typeRoots": ["node_modules/@types", "src/types"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    ".git",
+    "node_modules"
   ]
 }

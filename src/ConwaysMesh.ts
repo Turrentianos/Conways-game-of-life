@@ -1,20 +1,14 @@
-import {Color, DataTexture, DoubleSide, FloatType, GLSL3, LinearFilter, Mesh, NearestFilter, PlaneBufferGeometry, PlaneGeometry, RedFormat, Scene, ShaderMaterial, UniformsUtils, Vector2} from "three";
+import {Color, DataTexture, DoubleSide, FloatType, Mesh, NearestFilter, PlaneBufferGeometry, RedFormat, Scene, ShaderMaterial, UniformsUtils, Vector2} from "three";
 import ndarray from "ndarray";
 
 import { AbstractConway } from "./AbstractConway";
-// @ts-ignore
-import vertexShader from "./shaders/vertex.vert.glsl";
-// @ts-ignore
-import fragmentShader from "./shaders/fragment.frag.glsl";
-import fill from "./util";
+import copy from "./util";
 
 const shader = {
     uniforms: {
     u_size: { value: new Vector2(100, 100) },
     u_data: { value: null }
     },
-    vertexShader,
-    fragmentShader
 };
 
 const diffs = [
@@ -27,6 +21,21 @@ const diffs = [
     [-1,  1],
     [-1, -1],
   ];
+
+const fragmentShader = `
+precision highp float;
+precision highp int;
+precision highp sampler2D;
+
+uniform sampler2D u_data;
+uniform vec2 u_size;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy/u_size.xy;
+    vec4 color = texture( u_data, uv );
+
+    gl_FragColor = vec4(color.rrr, 1.0);
+}`;
 
 export default class ConwaysMesh extends AbstractConway {
     plane: Mesh;
@@ -45,36 +54,33 @@ export default class ConwaysMesh extends AbstractConway {
         texture.magFilter = NearestFilter;
         texture.unpackAlignment = 1;
         
-        // Material
-        // Inspired by https://threejs.org/examples/?q=texture3d#webgl2_materials_texture3d
         const uniforms = UniformsUtils.clone(shader.uniforms);
         uniforms["u_size"].value = new Vector2(width, height);
         uniforms["u_data"].value = texture;
         
         const material = new ShaderMaterial({
             uniforms: uniforms,
-            //vertexShader: shader.vertexShader,
-            fragmentShader: shader.fragmentShader,
-            side: DoubleSide, // The volume shader uses the backface as its "reference point"
-            // glslVersion: GLSL3
+            fragmentShader: fragmentShader,
+            side: DoubleSide, 
         });
-        // const geometry = new PlaneGeometry(1.9, 1.9);
+        
         const geometry = new PlaneBufferGeometry(width, height);
         const offset = 40;
+        
         this.world = world;
+        
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0; x < this.columns; x++) {
-                // this.world.set(i, j, (i+j)/(this.columns+this.rows));
                 this.world.set(x, y, +(x >= this.columns/2 - offset && x < this.columns/2 + offset && y >= this.rows/2 - offset && y < this.rows/2 + offset));
             }
         }
+        
         this.world0 = ndarray(new Float32Array(this.rows * this.columns),  [this.columns, this.rows]);
         
         this.densityTexture = texture;
 
         this.plane = new Mesh(geometry, material);
         scene.add(this.plane);
-        console.log(uniforms["u_size"].value);
     }
 
     isAlive(mesh: number) :boolean {
@@ -82,7 +88,7 @@ export default class ConwaysMesh extends AbstractConway {
     }
 
     tick() : void {
-        fill(this.world0, this.world);
+        copy(this.world0, this.world);
         for (let y = 0; y < this.rows; y++) {
             for (let x = 0 ; x < this.columns ; x++ ) {
                 this.world.set(x, y, +this.toLiveOrToDie(x, y));
