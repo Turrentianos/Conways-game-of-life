@@ -19,7 +19,7 @@ const scene = new Scene();
 const palette = {
   "Alive cells": [86, 0, 140],
   "Background": [0, 0, 0],
-  "Cube size": 0
+  "Cube size": 100
 };
 
 const mesh = new ConwaysMesh(palette["Alive cells"], 3, width, height, scene);

@@ -70,6 +70,8 @@ export default class ConwaysMesh extends AbstractConway {
         texture.magFilter = NearestFilter;
         texture.unpackAlignment = 1;
         
+        this.init_cube_world(100)
+
         this.color = ndarray(new Float32Array(3*2), [3, 2]);
         color.forEach((v, i) => this.color.set(i, 0, v/255));
         color.forEach((_, i) => this.color.set(i, 1, 0));
