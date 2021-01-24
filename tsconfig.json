@@ -4,26 +4,28 @@
     "moduleResolution": "node",
     "newLine": "LF",
     "outDir": "./lib/",
+    "baseUrl": "./src",
     "target": "es6",
     "sourceMap": true,
     "declaration": true,
-    "jsx": "preserve",
     "lib": [
       "esnext",
       "dom"
     ],
     "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
-    "src/**/*"
+    "src/**/*.ts"
   ],
   "exclude": [
-    ".git",
     "node_modules"
   ]
 }

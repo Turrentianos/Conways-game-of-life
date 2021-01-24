@@ -1,10 +1,9 @@
 import cwise from "cwise";
 
-
-let copy = cwise({
+const copy = cwise({
     args: ["array", "array"],
-    body: function(a: any, b: any) {
-        a = b;
+    body: function(a: number, b: number) : void {
+        a = b * +(a !== undefined);
     }
 });
 
